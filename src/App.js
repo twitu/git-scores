@@ -9,11 +9,7 @@ class App extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      score: [{
-        rank: 1,
-        nick: 'lsampras',
-        score: 10
-        }]
+      score: []
     };
     
     this.columns = [{

@@ -5,5 +5,4 @@ RUN npm install
 COPY . /app
 CMD node index.js
 CMD node sse.js
-EXPOSE 8080
-
+EXPOSE 8080 3000

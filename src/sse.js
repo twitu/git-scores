@@ -4,10 +4,7 @@ var parser = require("body-parser");
 var crypto = require('crypto');
 app.use(parser.json({extended:true}));
 var secret = "github-leaderboard-secret";
-var scoreTable = {
-    "lsampras": 1,
-    "twitu": 2,
-};
+var scoreTable = {};
 
 var clients = [];
 var freeClient = function(res){
@@ -59,10 +56,10 @@ var pushToClients = function(){
 
 var updateScores = function(req){
     let author = req.body["commits"][0]["author"]["username"];
-    if (scoreTable.author) {
-	    scoreTable.author += 1;
+    if (scoreTable[author]) {
+	    scoreTable[author] += 1;
 	} else {
-	    scoreTable.author = 1;
+	    scoreTable[author] = 1;
 	}
 }
 
@@ -76,8 +73,8 @@ app.post('/webhook' , function(req , res){
     let sig = crypto.createHmac('sha1', secret).update(JSON.stringify(req.body)).digest('hex');
     sig = "sha1="+ sig;
     if(sig == req.headers['x-hub-signature'] ){
-    	console.log("verified sig");
     	res.sendStatus(200);
+    	updateScores(req);
     	pushToClients();
     }else{
         //handle fake request
@@ -85,6 +82,6 @@ app.post('/webhook' , function(req , res){
     }
 })
 
-var server = app.listen(process.env.PORT, function(){
+var server = app.listen(8080, function(){
     console.log("Server has been started!!");
 })
