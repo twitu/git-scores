@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 // import logo from './logo.svg';
 import './App.css';
+import 'react-table/react-table.css';
 
 class App extends Component{
  
@@ -27,7 +28,7 @@ class App extends Component{
         Header: "Score",
         accessor: "score"
       }];
-    this.eventSource = new EventSource("/webhook");
+    this.eventSource = new EventSource("http://github-webhooks-sampraslop995.c9users.io/webhook");
     
   }
 
@@ -35,15 +36,9 @@ class App extends Component{
     this.eventSource.addEventListener('scoreUpdate', (e) => this.updateFlightState(JSON.parse(e.data)));
   }
 
-  updateFlightState(flightState) {
-    let newData = this.state.data.map((item) => {
-      if (item.flight === flightState.flight) {
-        item.state = flightState.state;
-      }
-      return item;
-    });
-
-    this.setState(Object.assign({}, {data: newData}));
+  updateFlightState(data) {
+    console.log("data received");
+    this.setState({score: data});
   }
   
   render() {
