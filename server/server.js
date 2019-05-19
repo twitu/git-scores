@@ -5,7 +5,7 @@ var crypto = require('crypto');
 app.use(parser.json({extended:true}));
 var secret = "github-leaderboard-secret";
 var scoreTable = {};
-
+var connections = 0;
 var clients = [];
 var freeClient = function(res){
     //remove client from listeners
@@ -45,7 +45,7 @@ var pushToClients = function(){
         scores[index].rank = parseInt(index) + 1; 
     }
     
-    let eventString = "id: 1\nevent: scoreUpdate\ndata: " + JSON.stringify(scores) + "\n\n";
+    let eventString = "event: scoreUpdate\ndata: " + JSON.stringify(scores) + "\n\n";
     console.log(eventString);
     
     clients.forEach(function(res){
@@ -64,8 +64,15 @@ var updateScores = function(req){
 }
 
 app.get('/webhook' , function(req , res){
-    console.log("client request");
+    // console.log("client request");
+    connections = connections+1;
     handleClient(req,res);
+})
+
+app.get('/' , function(req , res){
+    res.send("Connections: " + JSON.stringify(connections));
+    // connections = connections+1;
+    // handleClient(req,res);
 })
 
 app.post('/webhook' , function(req , res){
@@ -78,10 +85,10 @@ app.post('/webhook' , function(req , res){
     	pushToClients();
     }else{
         //handle fake request
-        console.log("auth failed")
+        // console.log("auth failed");
     }
 })
 
 var server = app.listen(8080, function(){
-    console.log("Server has been started!!");
+    // console.log("Server has been started!!");
 })

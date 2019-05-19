@@ -24,7 +24,7 @@ class App extends Component{
         Header: "Score",
         accessor: "score"
       }];
-    this.eventSource = new EventSource("http://github-webhooks-sampraslop995.c9users.io/webhook");
+    this.eventSource = new EventSource("http://localhost:8080/webhook");
     
   }
 
@@ -33,7 +33,7 @@ class App extends Component{
   }
 
   updateFlightState(data) {
-    console.log("data received");
+    // console.log("data received");
     this.setState({score: data});
   }
   
