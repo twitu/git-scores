@@ -5,11 +5,10 @@ var crypto = require('crypto');
 app.use(parser.json({extended:true}));
 var secret = "github-leaderboard-secret";
 var scoreTable = {};
-var connections = 0;
+// var connections = 0;
 var clients = [];
 var freeClient = function(res){
     //remove client from listeners
-    console.log("client close");
     var index = clients.indexOf(res);
     if (index > -1) {
       clients.splice(index, 1);
@@ -21,7 +20,9 @@ var handleClient = function(req,res){
         Connection: "keep-alive",
         "Content-Type": "text/event-stream",
         "Cache-Control": "no-cache",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "*",
+        "Access-Control-Allow-Credentials": true
       });
       
   clients.push(res);
@@ -36,7 +37,7 @@ var pushToClients = function(){
         item.nick = nick;
         item.score = scoreTable[nick];
         item.rank = 0;
-        scores.push(item)
+        scores.push(item);
     }
     
     scores.sort((a, b) => {a.score - b.score});
@@ -50,7 +51,6 @@ var pushToClients = function(){
     
     clients.forEach(function(res){
         res.write(eventString);
-        // console.log(scores);
     })
 }
 
@@ -64,13 +64,11 @@ var updateScores = function(req){
 }
 
 app.get('/webhook' , function(req , res){
-    // console.log("client request");
-    connections = connections+1;
     handleClient(req,res);
 })
 
 app.get('/' , function(req , res){
-    res.send("Connections: " + JSON.stringify(connections));
+    res.send("Connections: " + JSON.stringify(clients.length));
     // connections = connections+1;
     // handleClient(req,res);
 })
@@ -90,5 +88,5 @@ app.post('/webhook' , function(req , res){
 })
 
 var server = app.listen(8080, function(){
-    // console.log("Server has been started!!");
+    console.log("Server has been started!!");
 })

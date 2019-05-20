@@ -24,7 +24,7 @@ class App extends Component{
         Header: "Score",
         accessor: "score"
       }];
-    this.eventSource = new EventSource("http://localhost:8080/webhook");
+    this.eventSource = new EventSource("webhook",{withCredentials: true});
     
   }
 

@@ -1,4 +1,4 @@
-This web application scores the pull requests made to github repository and displays a leaderboard showinf the scores of the contributors.
+This web application scores the pull requests made to github repository and displays a leaderboard showing the scores of the contributors.
 
 ## Client
 The client renders a leaderboard table and listens to server for updates
@@ -21,8 +21,8 @@ The server should be running at http://localhost:8080, and the client server wil
 
 To stop the services:
 
-    $ docker compose-stop
+    $ docker-compose stop
 
 To kill the services:
 
-    CTRL + C and then $ docker compose-down
+    CTRL + C and then $ docker-compose down
