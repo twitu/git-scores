@@ -29,10 +29,10 @@ class App extends Component{
   }
 
   componentDidMount() {
-    this.eventSource.addEventListener('scoreUpdate', (e) => this.updateFlightState(JSON.parse(e.data)));
+    this.eventSource.addEventListener('scoreUpdate', (e) => this.updateScoreState(JSON.parse(e.data)));
   }
 
-  updateFlightState(data) {
+  updateScoreState(data) {
     // console.log("data received");
     this.setState({score: data});
   }

@@ -5,8 +5,8 @@ var crypto = require('crypto');
 app.use(parser.json({extended:true}));
 var secret = "github-leaderboard-secret";
 var scoreTable = {};
-// var connections = 0;
 var clients = [];
+
 var freeClient = function(res){
     //remove client from listeners
     var index = clients.indexOf(res);
@@ -47,11 +47,11 @@ var pushToClients = function(){
     }
     
     let eventString = "event: scoreUpdate\ndata: " + JSON.stringify(scores) + "\n\n";
-    console.log(eventString);
+    // console.log(eventString);
     
     clients.forEach(function(res){
         res.write(eventString);
-        console.log("pushing");
+        // console.log("pushing");
     })
 }
 
@@ -66,12 +66,6 @@ var updateScores = function(req){
 
 app.get('/webhook' , function(req , res){
     handleClient(req,res);
-})
-
-app.get('/' , function(req , res){
-    res.send("Connections: " + JSON.stringify(clients.length));
-    // connections = connections+1;
-    // handleClient(req,res);
 })
 
 app.post('/webhook' , function(req , res){
