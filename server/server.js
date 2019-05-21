@@ -19,7 +19,7 @@ var handleClient = function(req,res){
 	res.writeHead(200, {
         Connection: "keep-alive",
         "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
+        "Cache-Control": "no-transform",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Expose-Headers": "*",
         "Access-Control-Allow-Credentials": true
@@ -51,6 +51,7 @@ var pushToClients = function(){
     
     clients.forEach(function(res){
         res.write(eventString);
+        console.log("pushing");
     })
 }
 
