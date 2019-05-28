@@ -26,8 +26,28 @@ var handleClient = function(req,res){
       });
       
   clients.push(res);
-  
+  pushtoClient(res);
   req.on('close',()=>freeClient(res));
+}
+
+var pushtoClient = function(res){
+    let scores = []
+    for (let nick in scoreTable) {
+        let item = {};
+        item.nick = nick;
+        item.score = scoreTable[nick];
+        item.rank = 0;
+        scores.push(item);
+    }
+    
+    scores.sort((a, b) => {a.score - b.score});
+    
+    for (let index in scores) {
+        scores[index].rank = parseInt(index) + 1; 
+    }
+    
+    let eventString = "event: scoreUpdate\ndata: " + JSON.stringify(scores) + "\n\n";
+    res.write(eventString);
 }
 
 var pushToClients = function(){
